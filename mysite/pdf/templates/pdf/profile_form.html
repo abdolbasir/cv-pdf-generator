@@ -3,102 +3,698 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create Profile</title>
+    <title>Create Profile - CV Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        
+        .form-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .form-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .form-header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .form-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .form-body {
+            padding: 2.5rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: #a0aec0;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 0.5rem;
+        }
+        
+        .progress-step {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .form-wrapper {
+                border-radius: 12px;
+            }
+            
+            .form-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .form-body {
+                padding: 1.5rem;
+            }
+            
+            .form-title {
+                font-size: 1.75rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+        
+        /* Custom styling for form fields */
+        .form-control:invalid {
+            border-color: #e53e3e;
+        }
+        
+        .form-control:valid {
+            border-color: #38a169;
+        }
+        
+        /* Animation for form loading */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+                 .form-wrapper {
+             animation: fadeInUp 0.6s ease-out;
+         }
+         
+         /* Education form styles */
+         .education-form-item {
+             background: #f8f9fa;
+             border: 2px solid #e9ecef;
+             border-radius: 12px;
+             padding: 1.5rem;
+             margin-bottom: 1.5rem;
+             position: relative;
+         }
+         
+         .education-form-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 1rem;
+             padding-bottom: 0.75rem;
+             border-bottom: 1px solid #dee2e6;
+         }
+         
+         .education-title {
+             font-size: 1.1rem;
+             font-weight: 600;
+             color: #667eea;
+             margin: 0;
+         }
+         
+         .btn-remove-education {
+             background: #dc3545;
+             color: white;
+             border: none;
+             border-radius: 8px;
+             padding: 0.5rem 0.75rem;
+             cursor: pointer;
+             transition: all 0.3s ease;
+             font-size: 0.875rem;
+         }
+         
+         .btn-remove-education:hover {
+             background: #c82333;
+             transform: translateY(-1px);
+         }
+         
+         .form-actions-secondary {
+             text-align: center;
+             margin-top: 1rem;
+         }
+         
+         .btn-add-education {
+             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+             color: white;
+             border: none;
+             padding: 0.75rem 1.5rem;
+             border-radius: 12px;
+             font-weight: 600;
+             font-size: 0.9rem;
+             cursor: pointer;
+             transition: all 0.3s ease;
+             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+             display: inline-flex;
+             align-items: center;
+             gap: 0.5rem;
+         }
+         
+         .btn-add-education:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+         }
+    </style>
 </head>
-<body class="bg-light py-5">
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-8">
-            <div class="card shadow rounded-4">
-                <div class="card-body p-4">
-                    <h3 class="card-title mb-4 text-center">Create Your Profile</h3>
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {{ form.non_field_errors }}
-                        
-                        <div class="mb-3">
-                            {{ form.name.label_tag }}
-                            {{ form.name }}
-                            {% if form.name.errors %}
-                                <div class="text-danger">{{ form.name.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form.email.label_tag }}
-                                {{ form.email }}
-                                {% if form.email.errors %}
-                                    <div class="text-danger">{{ form.email.errors|striptags }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form.phone.label_tag }}
-                                {{ form.phone }}
-                                {% if form.phone.errors %}
-                                    <div class="text-danger">{{ form.phone.errors|striptags }}</div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            {{ form.summary.label_tag }}
-                            {{ form.summary }}
-                            {% if form.summary.errors %}
-                                <div class="text-danger">{{ form.summary.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form.degree.label_tag }}
-                                {{ form.degree }}
-                                {% if form.degree.errors %}
-                                    <div class="text-danger">{{ form.degree.errors|striptags }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form.university.label_tag }}
-                                {{ form.university }}
-                                {% if form.university.errors %}
-                                    <div class="text-danger">{{ form.university.errors|striptags }}</div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            {{ form.previous_work.label_tag }}
-                            {{ form.previous_work }}
-                            {% if form.previous_work.errors %}
-                                <div class="text-danger">{{ form.previous_work.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-3">
-                            {{ form.skills.label_tag }}
-                            {{ form.skills }}
-                            {% if form.skills.errors %}
-                                <div class="text-danger">{{ form.skills.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary px-4">Submit</button>
-                        </div>
-                    </form>
-                </div>
+<body>
+    <div class="form-wrapper">
+        <!-- Header Section -->
+        <div class="form-header">
+            <div class="form-header-content">
+                <h1 class="form-title">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Create Your Profile
+                </h1>
+                <p class="form-subtitle">Build your professional CV in minutes</p>
             </div>
         </div>
+        
+        <!-- Form Body -->
+        <div class="form-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Personal Information
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">
+                            <i class="fas fa-user me-1"></i>
+                            Full Name
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ form.name.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                <i class="fas fa-envelope me-1"></i>
+                                Email Address
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    {{ form.email.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                <i class="fas fa-phone me-1"></i>
+                                Phone Number
+                            </label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    {{ form.phone.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Professional Summary Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user-tie"></i>
+                        Professional Summary
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.summary.id_for_label }}" class="form-label">
+                            <i class="fas fa-file-alt me-1"></i>
+                            Professional Summary
+                        </label>
+                        {{ form.summary }}
+                        {% if form.summary.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ form.summary.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                                 <!-- Education Section -->
+                 <div class="form-section">
+                     <h3 class="section-title">
+                         <i class="fas fa-graduation-cap"></i>
+                         Education
+                     </h3>
+                     
+                     <div id="education-forms">
+                         {{ education_formset.management_form }}
+                         {% for education_form in education_formset %}
+                             <div class="education-form-item" data-form-index="{{ forloop.counter0 }}">
+                                 <div class="education-form-header">
+                                     <h4 class="education-title">
+                                         <i class="fas fa-graduation-cap me-2"></i>
+                                         Education Entry #{{ forloop.counter }}
+                                     </h4>
+                                     {% if not forloop.first %}
+                                         <button type="button" class="btn-remove-education" onclick="removeEducationForm(this)">
+                                             <i class="fas fa-trash"></i>
+                                         </button>
+                                     {% endif %}
+                                 </div>
+                                 
+                                 <div class="form-row">
+                                     <div class="form-group">
+                                         <label class="form-label">
+                                             <i class="fas fa-certificate me-1"></i>
+                                             Degree
+                                         </label>
+                                         {{ education_form.degree }}
+                                         {% if education_form.degree.errors %}
+                                             <div class="error-message">
+                                                 <i class="fas fa-exclamation-circle"></i>
+                                                 {{ education_form.degree.errors|striptags }}
+                                             </div>
+                                         {% endif %}
+                                     </div>
+                                     
+                                     <div class="form-group">
+                                         <label class="form-label">
+                                             <i class="fas fa-university me-1"></i>
+                                             University
+                                         </label>
+                                         {{ education_form.university }}
+                                         {% if education_form.university.errors %}
+                                             <div class="error-message">
+                                                 <i class="fas fa-exclamation-circle"></i>
+                                                 {{ education_form.university.errors|striptags }}
+                                             </div>
+                                         {% endif %}
+                                     </div>
+                                 </div>
+                                 
+                                 <div class="form-row">
+                                     <div class="form-group">
+                                         <label class="form-label">
+                                             <i class="fas fa-calendar me-1"></i>
+                                             Graduation Year
+                                         </label>
+                                         {{ education_form.graduation_year }}
+                                         {% if education_form.graduation_year.errors %}
+                                             <div class="error-message">
+                                                 <i class="fas fa-exclamation-circle"></i>
+                                                 {{ education_form.graduation_year.errors|striptags }}
+                                             </div>
+                                         {% endif %}
+                                     </div>
+                                     
+                                     <div class="form-group">
+                                         <label class="form-label">
+                                             <i class="fas fa-star me-1"></i>
+                                             GPA
+                                         </label>
+                                         {{ education_form.gpa }}
+                                         {% if education_form.gpa.errors %}
+                                             <div class="error-message">
+                                                 <i class="fas fa-exclamation-circle"></i>
+                                                 {{ education_form.gpa.errors|striptags }}
+                                             </div>
+                                         {% endif %}
+                                     </div>
+                                 </div>
+                                 
+                                 <div class="form-group">
+                                     <label class="form-label">
+                                         <i class="fas fa-file-alt me-1"></i>
+                                         Description (Optional)
+                                     </label>
+                                     {{ education_form.description }}
+                                     {% if education_form.description.errors %}
+                                         <div class="error-message">
+                                             <i class="fas fa-exclamation-circle"></i>
+                                             {{ education_form.description.errors|striptags }}
+                                         </div>
+                                     {% endif %}
+                                 </div>
+                                 
+                                 {{ education_form.DELETE }}
+                             </div>
+                         {% endfor %}
+                     </div>
+                     
+                     <div class="form-actions-secondary">
+                         <button type="button" class="btn-add-education" onclick="addEducationForm()">
+                             <i class="fas fa-plus"></i>
+                             Add Another Education
+                         </button>
+                     </div>
+                 </div>
+                
+                <!-- Work Experience Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-briefcase"></i>
+                        Work Experience
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.previous_work.id_for_label }}" class="form-label">
+                            <i class="fas fa-history me-1"></i>
+                            Previous Work Experience
+                        </label>
+                        {{ form.previous_work }}
+                        {% if form.previous_work.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ form.previous_work.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Skills Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-tools"></i>
+                        Skills
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.skills.id_for_label }}" class="form-label">
+                            <i class="fas fa-star me-1"></i>
+                            Skills & Competencies
+                        </label>
+                        {{ form.skills }}
+                        {% if form.skills.errors %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ form.skills.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-magic"></i>
+                        Generate My CV
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Dynamic education form handling
+        let formIndex = 1;
+        
+        function addEducationForm() {
+            const container = document.getElementById('education-forms');
+            const totalForms = document.getElementById('id_education-TOTAL_FORMS');
+            const currentForms = container.querySelectorAll('.education-form-item');
+            const currentIndex = currentForms.length;
+            
+            // Create new form element
+            const newForm = document.createElement('div');
+            newForm.className = 'education-form-item';
+            newForm.setAttribute('data-form-index', currentIndex);
+            
+            newForm.innerHTML = `
+                <div class="education-form-header">
+                    <h4 class="education-title">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        Education Entry #${currentIndex + 1}
+                    </h4>
+                    <button type="button" class="btn-remove-education" onclick="removeEducationForm(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-certificate me-1"></i>
+                            Degree
+                        </label>
+                        <input type="text" name="education-${currentIndex}-degree" class="form-control" placeholder="Degree (e.g., Bachelor of Science in Computer Science)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-university me-1"></i>
+                            University
+                        </label>
+                        <input type="text" name="education-${currentIndex}-university" class="form-control" placeholder="University Name">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar me-1"></i>
+                            Graduation Year
+                        </label>
+                        <input type="text" name="education-${currentIndex}-graduation_year" class="form-control" placeholder="Graduation Year (e.g., 2023)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-star me-1"></i>
+                            GPA
+                        </label>
+                        <input type="text" name="education-${currentIndex}-gpa" class="form-control" placeholder="GPA (e.g., 3.8/4.0)">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-file-alt me-1"></i>
+                        Description (Optional)
+                    </label>
+                    <textarea name="education-${currentIndex}-description" class="form-control" placeholder="Additional details about your education (optional)" rows="2"></textarea>
+                </div>
+                
+                <input type="hidden" name="education-${currentIndex}-id" value="">
+                <input type="hidden" name="education-${currentIndex}-DELETE" value="">
+            `;
+            
+            container.appendChild(newForm);
+            totalForms.value = currentIndex + 1;
+            
+            // Update form numbers
+            updateFormNumbers();
+        }
+        
+        function removeEducationForm(button) {
+            const formItem = button.closest('.education-form-item');
+            const deleteField = formItem.querySelector('input[name$="-DELETE"]');
+            if (deleteField) {
+                deleteField.value = 'on';
+                formItem.style.display = 'none';
+            } else {
+                formItem.remove();
+            }
+            
+            const totalForms = document.getElementById('id_education-TOTAL_FORMS');
+            const visibleForms = document.querySelectorAll('.education-form-item:not([style*="display: none"])');
+            totalForms.value = visibleForms.length;
+            
+            // Update form numbers
+            updateFormNumbers();
+        }
+        
+        function updateFormNumbers() {
+            const forms = document.querySelectorAll('.education-form-item:not([style*="display: none"])');
+            forms.forEach((form, index) => {
+                const title = form.querySelector('.education-title');
+                title.innerHTML = `<i class="fas fa-graduation-cap me-2"></i>Education Entry #${index + 1}`;
+            });
+        }
+    </script>
 </body>
 </html>

@@ -5,63 +5,599 @@
     <meta charset="UTF-8">
     <title>{{ profile.name }} - CV</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            background: #f8f9fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #f8fafc;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
-        .cv-section-title {
-            border-bottom: 2px solid #0d6efd;
-            padding-bottom: 4px;
-            margin-bottom: 16px;
-            font-weight: 600;
-            color: #0d6efd;
-        }
-        .cv-container {
+        
+        .cv-wrapper {
+            max-width: 850px;
+            margin: 0 auto;
             background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .cv-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e40af 100%);
+            color: white;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cv-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .cv-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .cv-header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cv-name {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cv-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .cv-contact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            opacity: 0.95;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-item i {
+            width: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+        
+        .cv-body {
+            padding: 2.5rem;
+            background: white;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 4rem;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #1e40af);
+            border-radius: 2px;
+        }
+        
+        .section-title i {
+            color: #3b82f6;
+            font-size: 1.2rem;
+        }
+        
+        .section-content {
+            color: #374151;
+            line-height: 1.7;
+        }
+        
+        .education-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 1.75rem;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            padding: 2rem;
+            border-left: 5px solid #3b82f6;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+        
+        .education-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .education-degree {
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .education-university {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .education-details {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .education-year,
+        .education-gpa {
+            font-size: 0.9rem;
+            color: #6b7280;
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-weight: 500;
+        }
+        
+        .education-description {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.6;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .experience-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 1.75rem;
+            border-radius: 16px;
+            border-left: 5px solid #3b82f6;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .skills-content {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 1.75rem;
+            border-radius: 16px;
+            border-left: 5px solid #3b82f6;
+            line-height: 1.8;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .skills-content p {
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0;
+        }
+        
+        .skills-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .summary-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #374151;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 1.75rem;
+            border-radius: 16px;
+            border-left: 5px solid #3b82f6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .action-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.75rem;
+            z-index: 1000;
+        }
+        
+        .btn-modern {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary-modern {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-success-modern {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+        
+        .btn-warning-modern {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* Additional styling improvements */
+        .cv-footer {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 1.5rem 2.5rem;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .cv-footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-text {
+            font-weight: 500;
+        }
+        
+        .footer-date {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        /* Skill tags styling */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .skill-tag {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        /* Enhanced typography */
+        .highlight-text {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        .muted-text {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        /* Print styles for PDF */
+        @media print {
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+                font-size: 12pt;
+            }
+            
+            .cv-wrapper {
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                max-width: none;
+                page-break-inside: avoid;
+            }
+            
+            .action-buttons {
+                display: none;
+            }
+            
+            .cv-header {
+                background: #1e3a8a !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+                margin-bottom: 2rem;
+            }
+            
+            .education-item,
+            .experience-item,
+            .skills-content,
+            .summary-text {
+                page-break-inside: avoid;
+                background: #f8fafc !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .section-title {
+                color: #1e3a8a !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .section-title::after {
+                background: #3b82f6 !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .cv-footer {
+                background: #f1f5f9 !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                print-color-adjust: exact;
+                border-top: 1px solid #e2e8f0 !important;
+            }
+            
+            .footer-date {
+                color: #3b82f6 !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .cv-wrapper {
+                margin: 1rem;
+                border-radius: 12px;
+            }
+            
+            .cv-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .cv-body {
+                padding: 1.5rem;
+            }
+            
+            .cv-name {
+                font-size: 2rem;
+            }
+            
+            .cv-contact {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .action-buttons {
+                position: static;
+                margin-top: 2rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
-<body class="py-5">
-<div class="container">
-    <div class="cv-container">
-        <h2 class="mb-1">{{ profile.name }}</h2>
-        <p class="text-muted mb-4">{{ profile.email }} | {{ profile.phone }}</p>
-
-        <div class="mb-4">
-            <h5 class="cv-section-title">Professional Summary</h5>
-            <p>{{ profile.summary }}</p>
+<body>
+    <div class="cv-wrapper">
+        <!-- Header Section -->
+        <div class="cv-header">
+            <div class="cv-header-content">
+                <h1 class="cv-name">{{ profile.name }}</h1>
+                <p class="cv-title">Professional CV</p>
+                <div class="cv-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ profile.email }}</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ profile.phone }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-4">
-            <h5 class="cv-section-title">Education</h5>
-            <p><strong>{{ profile.degree }}</strong></p>
-            <p class="text-muted">{{ profile.university }}</p>
+        
+        <!-- Body Section -->
+        <div class="cv-body">
+            <!-- Professional Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Professional Summary
+                </h2>
+                <div class="section-content">
+                    <div class="summary-text">
+                        {{ profile.summary }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Education -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-graduation-cap me-2"></i>
+                    Education
+                </h2>
+                <div class="section-content">
+                    {% if profile.educations.all %}
+                        {% for education in profile.educations.all %}
+                            <div class="education-item">
+                                <div class="education-degree">{{ education.degree }}</div>
+                                <div class="education-university">{{ education.university }}</div>
+                                {% if education.graduation_year or education.gpa %}
+                                    <div class="education-details">
+                                        {% if education.graduation_year %}
+                                            <span class="education-year">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ education.graduation_year }}
+                                            </span>
+                                        {% endif %}
+                                        {% if education.gpa %}
+                                            <span class="education-gpa">
+                                                <i class="fas fa-star me-1"></i>
+                                                GPA: {{ education.gpa }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                                {% if education.description %}
+                                    <div class="education-description">
+                                        {{ education.description|linebreaks }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="education-item">
+                            <div class="education-degree">No education information available</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Work Experience -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-briefcase me-2"></i>
+                    Work Experience
+                </h2>
+                <div class="section-content">
+                    <div class="experience-item">
+                        {{ profile.previous_work|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skills -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-tools me-2"></i>
+                    Skills & Competencies
+                </h2>
+                <div class="section-content">
+                    <div class="skills-content">
+                        {{ profile.skills|linebreaks }}
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-4">
-            <h5 class="cv-section-title">Work Experience</h5>
-            <p>{{ profile.previous_work|linebreaks }}</p>
-        </div>
-
-        <div class="mb-4">
-            <h5 class="cv-section-title">Skills</h5>
-            <p>{{ profile.skills|linebreaks }}</p>
-        </div>
-
-        <div class="text-end mt-4">
-            <a href="{% url 'create_profile' %}" class="btn btn-outline-primary">Download PDF</a>
+        
+        <!-- Footer -->
+        <div class="cv-footer">
+            <div class="cv-footer-content">
+                <div class="footer-text">
+                    <i class="fas fa-file-alt me-1"></i>
+                    Professional Curriculum Vitae
+                </div>
+                <div class="footer-date">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    Generated on {{ "now"|date:"F j, Y" }}
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-></script>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="{% url 'generate_pdf' pk=profile.pk %}" class="btn-modern btn-primary-modern">
+            <i class="fas fa-file-pdf"></i>
+            Generate PDF
+        </a>
+        <a href="{% url 'generate_pdf_alternative' pk=profile.pk %}" class="btn-modern btn-success-modern">
+            <i class="fas fa-download"></i>
+            Download PDF
+        </a>
+        <a href="{% url 'debug_pdf' pk=profile.pk %}" class="btn-modern btn-warning-modern">
+            <i class="fas fa-cog"></i>
+            Debug
+        </a>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
